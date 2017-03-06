@@ -10,17 +10,24 @@ export default function ({ types: t }) {
           file.set('hasJSX', false);
         },
 
-        exit({ node, scope }, { file, opts }) {
-
-          const name = opts.name || 'React';
-          const lib = opts.lib || name.toLowerCase();
+        exit({ node, scope }, { file, opts = {} }) {
 
           if (!file.get('hasJSX') || scope.hasBinding(name)) {
             return;
           }
 
+          const {
+            importName: name = 'React',
+            lib = name.toLowerCase(),
+            defaultImport = true
+          } = opts;
+
+          const importNode = defaultImport
+                ? t.importDefaultSpecifier
+                : t.importSpecifier;
+
           const reactImportDeclaration = t.importDeclaration([
-            t.importDefaultSpecifier(t.identifier(name)),
+            importNode(t.identifier(name)),
           ], t.stringLiteral(lib));
 
           node.body.unshift(reactImportDeclaration);
