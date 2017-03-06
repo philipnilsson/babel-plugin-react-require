@@ -22,13 +22,12 @@ export default function ({ types: t }) {
             defaultImport = true
           } = opts;
 
+          const identifierNode = t.identifier(name);
           const importNode = defaultImport
-                ? t.importDefaultSpecifier
-                : t.importSpecifier;
-
-          const reactImportDeclaration = t.importDeclaration([
-            importNode(t.identifier(name)),
-          ], t.stringLiteral(lib));
+                ? t.importDefaultSpecifier(identifierNode)
+                : t.importSpecifier(identifierNode, identifierNode);
+          const reactImportDeclaration =
+                t.importDeclaration([ importNode, ], t.stringLiteral(lib));
 
           node.body.unshift(reactImportDeclaration);
         },
