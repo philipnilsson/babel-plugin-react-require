@@ -47,3 +47,14 @@ npm install babel-plugin-react-require --save-dev
   ]
 }
 ```
+
+* If you're using a React alternative the `name` and `lib` options can be used to determine the name of the library and
+  the name of the import. For instance in order to add impots on the form `import {element} from 'deku'` configure the plugin
+  as follows
+
+```json
+{
+  "plugins": [
+    "react-require", { lib: 'deku', name: 'element' }
+  ]
+}
